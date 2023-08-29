@@ -13,7 +13,6 @@ pipeline {
         stage('Install') {
             steps {
                 dir('C:\\Aplicaciones\\Apache24\\htdocs\\Biblioteca-digital\\Biblioteca-Frontend') {
-                    bat "composer install"
                     bat "npm install"
                 }
             }
