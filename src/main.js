@@ -9,6 +9,7 @@ import App from './App.vue'
 // Composables
 import { createApp } from 'vue'
 import { createPinia } from 'pinia';
+import $ from 'jquery';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 // Plugins
@@ -17,8 +18,9 @@ import axios from 'axios'
 import { registerPlugins } from '@/plugins'
 
 axios.defaults.withCredentials=true
-axios.defaults.baseURL='http://localhost:8000'
+axios.defaults.baseURL='https://docapi.localto.net'
 axios.get('/sanctum/csrf-cookie')
+window.$ = $;
 
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
