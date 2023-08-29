@@ -4,16 +4,14 @@
             <v-btn icon="mdi-heart"></v-btn>
 
             <v-btn icon="mdi-magnify"></v-btn>
-
-            <v-btn icon="mdi-dots-vertical"></v-btn>
+            
+            <v-btn @click="logout">Logout</v-btn>
         </template>
     </v-app-bar>
-    <v-btn @click="logout">Logout</v-btn>
     <iframe src="https://documind.chat/dashboard/sharing/534d52a1702748c7d20a1b86a2c8c011" title="Test" height="500" width="900"></iframe>
     <v-textarea v-model="consulta"/>
     <v-textarea v-model="respuesta"/>
     <v-btn @click="Enviar">Enviar</v-btn>
-    <p>TEST</p>
 </template>
 <script>
 import axios from 'axios';
