@@ -1,10 +1,11 @@
 pipeline {
     agent 'any'
+    tools { nodejs "nodejs" }
     stages {
         stage('Pull') {
             steps {
-                dir('C:\\Aplicaciones\\Apache24\\htdocs\\Biblioteca-digital\\Biblioteca-Frontend') {
-                    bat "git config --global --add safe.directory 'C:/Aplicaciones/Apache24/htdocs/Biblioteca-digital/Biblioteca-Frontend'"
+                dir('C:\\Aplicaciones\\Apache24\\htdocs\\Biblioteca-digital\\Biblioteca-Frontend\\') {
+                    bat "git config --system --add safe.directory 'C:/Aplicaciones/Apache24/htdocs/Biblioteca-digital/Biblioteca-Frontend'"
                     bat "git pull"
                 }
             }
