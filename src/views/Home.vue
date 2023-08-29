@@ -12,7 +12,7 @@
     <v-textarea v-model="consulta"/>
     <v-textarea v-model="respuesta"/>
     <v-btn @click="Enviar">Enviar</v-btn>
-    <p>ab</p>
+    <p>abc</p>
 </template>
 <script>
 import axios from 'axios';
