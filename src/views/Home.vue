@@ -1,13 +1,5 @@
 <template>
-    <v-app-bar Title="Bienvenido" :elevation="2" rounded>
-        <template v-slot:append>
-            <v-btn icon="mdi-heart"></v-btn>
-
-            <v-btn icon="mdi-magnify"></v-btn>
-            
-            <v-btn @click="logout">Logout</v-btn>
-        </template>
-    </v-app-bar>
+    
     <iframe src="https://documind.chat/dashboard/sharing/534d52a1702748c7d20a1b86a2c8c011" title="Test" height="500" width="900"></iframe>
     <v-textarea v-model="consulta"/>
     <v-textarea v-model="respuesta"/>

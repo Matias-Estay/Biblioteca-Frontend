@@ -18,7 +18,7 @@ import axios from 'axios'
 import { registerPlugins } from '@/plugins'
 
 axios.defaults.withCredentials=true
-axios.defaults.baseURL='https://docapi.localto.net'
+axios.defaults.baseURL=import.meta.env.VITE_BACKEND_URL
 axios.get('/sanctum/csrf-cookie')
 window.$ = $;
 
