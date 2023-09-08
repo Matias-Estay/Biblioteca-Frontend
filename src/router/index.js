@@ -39,6 +39,14 @@ const routes = [
         // which is lazy-loaded when the route is visited.
         component: () => import(/* webpackChunkName: "home" */ '@/views/Collections.vue'),
       },
+      {
+        path: '/chat',
+        name: 'Chat',
+        // route level code-splitting
+        // this generates a separate chunk (about.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: () => import(/* webpackChunkName: "home" */ '@/views/Chat.vue'),
+      },
     ],
   }
 ]
@@ -53,14 +61,15 @@ router.beforeEach((to, from, next) => {
 
   const { SetUser } = sessionStore()
   axios.get('/api/loggedIn').then((resultado)=>{
+    //Logged IN
     if (to.name !== 'Login' && resultado.data==''){ 
       next({ name: 'Login' })
       SetUser({})
-    }else{ 
-      if (to.name == 'Login'  && resultado.data) 
-        next({ name: 'Home' })
-      next()
+    }else  if (to.name == 'Login'  && resultado.data){ 
+      next({ name: 'Home' })
+    //Chat allowed
     }
+    next()
   })
 })
 
