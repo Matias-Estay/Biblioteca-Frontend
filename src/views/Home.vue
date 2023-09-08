@@ -16,13 +16,6 @@ export default{
            axios.get('/api/quota').then(res=>{
                 console.log(res)
            })
-           axios.post('/api/careateCollection',{hola:'hola'},{
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-            }).then(res=>{
-                console.log(res)
-            })
         }
         return{
             consulta,
