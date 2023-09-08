@@ -83,7 +83,12 @@ export default{
                 form_collection.append('files['+i+']', files.value[i]);
             }
             form_collection.getAll('files',"name");
-            axios.post('/api/careateCollection',form_collection).then((res)=>{
+            axios.post('/api/careateCollection',form_collection,{
+                headers:{
+                    "Access-Control-Allow-Origin": "https://miec-library.store/collections",
+                    Vary: 'Origin'
+                }
+            }).then((res)=>{
                 console.log(res.data)
             })
         }

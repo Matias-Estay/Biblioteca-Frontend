@@ -20,7 +20,10 @@ export default defineConfig({
       },
     }),
   ],
-  define: { 'process.env': {} },
+  define: { 'process.env': {
+    BASEURL: "https://miec-library.store",
+    BACKEND_URL: 'https://apidoc.miec-library.store'
+  } },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
