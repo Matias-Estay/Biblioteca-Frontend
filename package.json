@@ -9,6 +9,7 @@
     "lint": "eslint . --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@chatdocai/chatdoc-sdk": "^0.0.14",
     "@mdi/font": "7.0.96",
     "axios": "^1.4.0",
     "core-js": "^3.29.0",
