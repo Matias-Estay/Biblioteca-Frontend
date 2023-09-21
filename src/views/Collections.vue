@@ -143,7 +143,7 @@ export default{
             })
         }
         const Load_Collections = () =>{
-            collection_modal.value=[]
+            collections.value=[]
             axios.get('/api/collections',{},{
                 headers:{
                     "Access-Control-Allow-Origin": "https://miec-library.store/collections",

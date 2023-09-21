@@ -5,7 +5,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 const routes = [
   {
-    path: '/',
+    path: '/login',
     component: () => import('@/layouts/default/Default.vue'),
     children: [
       {
@@ -58,9 +58,9 @@ const router = createRouter({
 
 
 router.beforeEach((to, from, next) => {
-
   const { SetUser } = sessionStore()
   axios.get('/api/loggedIn').then((resultado)=>{
+    console.log(resultado.data)
     //Logged IN
     if (to.name !== 'Login' && resultado.data==''){ 
       next({ name: 'Login' })
