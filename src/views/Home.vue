@@ -13,32 +13,35 @@
                     variant="outlined"
                 >
                     <div class="d-flex flex-no-wrap justify-space-between">
-                    <div>
-                        <v-card-title class="text-h5">
-                            {{item.name}}
-                        </v-card-title>
+                        <div class="w-100">
+                            <v-card-title class="text-h5">
+                                {{item.name}}
+                            </v-card-title>
 
-                        <v-card-subtitle>
-                            Total Files: {{ 1 }}
-                        </v-card-subtitle>
+                            <v-card-subtitle>
+                                Total Files: {{ 1 }}
+                            </v-card-subtitle>
 
-                        <v-card-actions>
-                            <v-switch  
-                            v-model="item.description" 
-                            :loading="sharing"
-                            :value="1"
-                            :label="item.description==1?'Public':'Private'" @change="Share(item)"/>
-                        </v-card-actions>
+                            <v-card-actions>
+                                <v-switch  
+                                v-model="item.description" 
+                                :loading="sharing"
+                                :value="1"
+                                :label="item.description==1?'Public':'Private'" @change="Share(item)"/>
+                            </v-card-actions>
+                        </div>
+
+                        <v-avatar
+                            class="ma-3"
+                            size="125"
+                            rounded="0"
+                        >
+                            <v-icon icon="mdi-folder-file-outline" size="90"/>
+                        </v-avatar>
                     </div>
-
-                    <v-avatar
-                        class="ma-3"
-                        size="125"
-                        rounded="0"
-                    >
-                        <v-icon icon="mdi-folder-file-outline" size="90"/>
-                    </v-avatar>
-                    </div>
+                    <v-container>
+                        <v-text-field v-if="item.description==1" :value="base_url+'/shared?id='+item.id+'&id_api='+item.id_api" readonly label="Click to reveal URL for share:"/>
+                    </v-container>
                 </v-card>
 
             </v-col>
@@ -50,9 +53,11 @@ import { ref } from 'vue'
 import axios from 'axios'
 export default{
     mounted(){
+        this.base_url=process.env.BASEURL
         this.Load_Collections()
     },
     setup(){
+        const base_url = ref('')
         const collections = ref([])
         const sharing = ref(false)
         const Load_Collections = () =>{
@@ -69,6 +74,7 @@ export default{
         }
         return{
             collections,
+            base_url,
             sharing,
             Load_Collections,
             Share

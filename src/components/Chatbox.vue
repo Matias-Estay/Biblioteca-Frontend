@@ -40,8 +40,10 @@
 <script>
 import axios from 'axios';
 import { ref } from 'vue';
+import { useRoute } from 'vue-router';
 export default{
     setup(){
+        const route = useRoute()
         const question = ref('')
         const question_aux = ref('')
         const answer = ref('')

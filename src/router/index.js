@@ -21,19 +21,28 @@ const routes = [
     name: 'Shared',
     component: () => import(/* webpackChunkName: "home" */ '@/views/Shared.vue'),
     beforeEnter: (to, from, next) => {
-      Shared(to.query.id_col).then((authorized)=>{
-        if(authorized){
-          next()
-        }else{
-          next({path:'/401'})
-        }
-      })
+      if(to.query.id && to.query.id_api){
+        Shared(to.query.id).then((authorized)=>{
+          if(authorized){
+            next()
+          }else{
+            next({path:'/401'})
+          }
+        })
+      }else{
+        next({path:'/404'})
+      }
     }
   },
   {
     path: '/401',
     name: 'Unauthorized',
     component: () => import(/* webpackChunkName: "home" */ '@/views/401.vue'),
+  },
+  {
+    path: '/404',
+    name: 'NotFound',
+    component: () => import(/* webpackChunkName: "home" */ '@/views/404.vue'),
   },
   {
     path: '/',
@@ -97,6 +106,9 @@ router.beforeEach((to, from, next) => {
       case 'Unauthorized':
         next()
         break
+      case 'NotFound':
+          next()
+          break
       case 'Login':
         if(loggedin){
           next({path:'/home'})
