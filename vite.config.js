@@ -21,8 +21,8 @@ export default defineConfig({
     }),
   ],
   define: { 'process.env': {
-    BASEURL: "https://ailvhyg.localto.net",
-    BACKEND_URL: 'https://spl8anv.localto.net'
+    BASEURL: "https://miec-library.store",
+    BACKEND_URL: 'https://api-doc.miec-library.store'
   } },
   resolve: {
     alias: {
