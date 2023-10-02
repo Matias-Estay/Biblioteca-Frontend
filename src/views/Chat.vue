@@ -138,7 +138,7 @@ export default{
         }
         const Upload_Documents = () =>{
             var form_collection = new FormData();
-            form_collection.append('id', route.query.id_api);
+            form_collection.append('id_api', route.query.id_api);
             for(let i=0;i<files.value.length;i++){
                 form_collection.append('files['+i+']', files.value[i]);
             }
