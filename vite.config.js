@@ -22,7 +22,7 @@ export default defineConfig({
   ],
   define: { 'process.env': {
     BASEURL: "https://miec-library.store",
-    BACKEND_URL: 'https://api-doc.miec-library.store'
+    BACKEND_URL: 'https://apidoc.miec-library.store'
   } },
   resolve: {
     alias: {
