@@ -112,7 +112,6 @@ import {ref} from 'vue'
 export default{
     mounted(){
         this.Load_Collections()
-        console.log("hola2")
     },
     setup(){
         const collection_modal = ref(false)
@@ -144,12 +143,7 @@ export default{
         }
         const Load_Collections = () =>{
             collections.value=[]
-            axios.get('/api/collections',{},{
-                headers:{
-                    "Access-Control-Allow-Origin": "https://miec-library.store/collections",
-                    Vary: 'Origin'
-                }
-            }).then((res)=>{
+            axios.get('/api/collections',{}).then((res)=>{
                 collections.value=res.data
             })
         }

@@ -4,7 +4,71 @@
         v-model="drawer"
         temporary
       >
-      <v-list-subheader compact nav inset class="mx-4">Edit your Files</v-list-subheader>
+        <v-list-subheader compact nav inset class="mx-4">
+            <v-container fluid>
+                <v-row>
+                    Edit your Files
+                </v-row>
+            </v-container>
+        </v-list-subheader>
+        <v-list-item>
+            <v-dialog
+            class="dialog" 
+            v-model="documents_modal"
+            persistent
+            scrollable
+            >
+            <template v-slot:activator="{ props }">
+                <v-btn
+                variant="outlined"
+                color="primary"
+                v-bind="props"
+                >
+                <v-icon icon="mdi-file-upload" class="mr-1"/>
+                New Document
+                </v-btn>
+            </template>
+            <v-container>
+                <v-row no-gutters justify="center">
+                    <v-col xl="6" xxl="6" lg="8" md="12" sm="12" align-self="center">
+                        <v-sheet>
+                            <v-card>
+                                <v-card-title>
+                                    Add Documents
+                                </v-card-title>
+                                <v-divider/>
+                                <v-card-text>
+                                    <v-file-input
+                                    accept=".doc,.docx,.pdf"
+                                    label="Drag the files for the collection"
+                                    v-model="new_files"
+                                    multiple
+                                    />
+                                </v-card-text>
+                                <v-divider/>
+                                <v-card-actions>
+                                    <v-btn
+                                        color="blue-darken-1"
+                                        variant="text"
+                                        @click="documents_modal = false"
+                                    >
+                                        Close
+                                    </v-btn>
+                                    <v-btn
+                                        color="info"
+                                        variant="elevated"
+                                        @click="Upload_Documents"
+                                    >
+                                        Save
+                                    </v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </v-sheet>
+                    </v-col>
+                </v-row>
+            </v-container>
+            </v-dialog>
+        </v-list-item>
         <v-list-item
         v-for="file in files"
         :key="file.title"
@@ -13,7 +77,7 @@
         >
         <template v-slot:prepend>
             <v-avatar color="grey-darken-2">
-            <v-icon color="white">mdi-file-{{ file.extention }}</v-icon>
+                <v-icon color="white">mdi-file-{{ file.extention }}</v-icon>
             </v-avatar>
         </template>
 
@@ -22,6 +86,7 @@
             color="red"
             icon="mdi-delete"
             variant="text"
+            @click="Eliminar_documento(file.id_api)"
             ></v-btn>
         </template>
         </v-list-item>
@@ -37,109 +102,53 @@
                     Documents
                 </v-chip>
             </v-row>
-                <v-row>
-                    <v-textarea
-                    rows="1"
-                    readonly
-                    auto-grow
-                    label="Your Question:"
-                    prepend-icon="mdi-account-box"
-                    class="my-4"
-                    v-model="question_aux"
-                    />
-                </v-row>
-                <v-row>
-                    <v-textarea
-                    rows="1"
-                    readonly
-                    auto-grow
-                    label="Answer:"
-                    append-icon="mdi-robot"
-                    v-model="answer"
-                    />
-                </v-row>
-                <v-row>
-                    <v-textarea
-                    :loading="loading"
-                    v-model="question"
-                    label="Ask a question"
-                    >
-                    <template v-slot:append>
-                        <v-btn color="primary" :loading="loading" @click="Ask_Question" class="my-10">
-                            <v-icon icon="mdi-send-circle"/>
-                            <v-progress-linear indeterminate></v-progress-linear>
-                        </v-btn>
-                    </template>
-                    </v-textarea>
-                </v-row>
-            </v-container>
+        </v-container>
+        <chat-box/>
       </v-main>
     </v-layout>
 </template>
 <script>
 import axios from 'axios';
 import { ref } from 'vue';
+import Chatbox from '../components/Chatbox.vue'
 import { useRoute } from 'vue-router';
-
 export default{
+    components:{
+        'chat-box':Chatbox
+    },
+    mounted(){
+        this.Actualizar_files()
+    },
     setup(){
-        const loading = ref(false)
-        const question = ref('')
-        const question_aux = ref('')
-        const answer = ref('')
-        const drawer = ref(false)
-        const files = ref([
-        {
-          subtitle: 'Jan 9, 2014',
-          title: 'Photos',
-          extention: 'pdf-box'
-        },
-        {
-          subtitle: 'Jan 17, 2014',
-          title: 'Recipes',
-          extention: 'pdf-box'
-        },
-        {
-          subtitle: 'Jan 28, 2014',
-          title: 'Work',
-          extention: 'word'
-        },
-        ])
+        var files = ref([])
         const route = useRoute()
-        const Test = () => {
-            console.log("test")
+        const new_files = ref([])
+        const drawer = ref(false)
+        const documents_modal = ref(false)
+        const Eliminar_documento = (id_doc)=>{
+            axios.post('/api/DocumentDelete',{id_doc}).then(res=>{
+                Actualizar_files()
+            })
         }
-        const Ask_Question = () => {
-            loading.value=true
-            question_aux.value=question.value
-            axios.post('/api/askQuestion',{question:question.value,id:route.query.id,id_api:route.query.id_api}).then((res)=>{
-                answer.value = ''
-                question.value=''
-                var aux = res.data.replace(/[\r]/gm, '')
-                var rescue = aux.split("\n")
-                for(let i = 0;i<rescue.length;i++){
-                    if(rescue[i]){
-                        try{
-                            var aux2 = JSON.parse('{'+(rescue[i].replace('data','"data"')).replaceAll("'","\"")+'}')
-                            answer.value = answer.value + aux2.data.answer
-                            loading.value=false
-                        }catch{
-                            loading.value=false
-                            console.log("error")    
-                        }
-                    }
-                }
-                })
+        const Actualizar_files = () =>{
+            files.value=[]
+            axios.get('/api/collectionDocuments',{params:{id_api:route.query.id_api}}).then(res=>{
+                files.value=res.data
+            })
+        }
+        const Upload_Documents = () =>{
+            axios.post('/api/UploadDocumentsCollection',{id_api:route.query.id_api}).then(res=>{
+                Actualizar_files()
+            })
         }
         return{
-            loading,
             drawer,
-            question,
-            question_aux,
-            answer,
+            documents_modal,
             files,
-            Test,
-            Ask_Question
+            new_files,
+            Actualizar_files,
+            Upload_Documents,
+            Eliminar_documento
         }
     }
 }

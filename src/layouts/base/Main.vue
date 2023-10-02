@@ -24,11 +24,9 @@
                 >
                     <v-list-item
                     prepend-icon="mdi-account-circle-outline"
-                    title="User"
+                    :title="session.user.name"
                     />
-
                     <v-divider></v-divider>
-
                     <v-list density="compact" nav>
                         <v-list-item prepend-icon="mdi-home" title="Home" value="home" @click="RouterTo('/home')"/>
                         <v-list-item prepend-icon="mdi-folder" title="Collections" value="collections" @click="RouterTo('/collections')"/>
@@ -58,7 +56,7 @@ export default{
         const Logout = ()=>{
             axios.post('/api/logout').then(()=>{
                 session.SetUser({})
-                router.push('/')
+                router.push('/login')
             })
         }
         const RouterTo = (url)=>{
@@ -66,8 +64,9 @@ export default{
         }
         return{
             drawer,
+            session,
             Logout,
-            RouterTo
+            RouterTo,
         }
     }
 }
