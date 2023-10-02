@@ -137,7 +137,13 @@ export default{
             })
         }
         const Upload_Documents = () =>{
-            axios.post('/api/UploadDocumentsCollection',{id_api:route.query.id_api}).then(res=>{
+            var form_collection = new FormData();
+            form_collection.append('id', route.query.id_api);
+            for(let i=0;i<files.value.length;i++){
+                form_collection.append('files['+i+']', files.value[i]);
+            }
+            form_collection.getAll('files',"name");
+            axios.post('/api/UploadDocumentsCollection',{form_collection}).then(res=>{
                 Actualizar_files()
             })
         }
