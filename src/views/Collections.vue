@@ -132,7 +132,6 @@ export default{
             }
             form_collection.getAll('files',"name");
             axios.post('/api/careateCollection',form_collection).then((res)=>{
-                console.log(res.data)
                 Load_Collections()
             })
         }

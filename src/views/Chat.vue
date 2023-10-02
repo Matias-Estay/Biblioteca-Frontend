@@ -143,7 +143,7 @@ export default{
                 form_collection.append('files['+i+']', new_files.value[i]);
             }
             form_collection.getAll('files',"id_api");
-            axios.post('/api/UploadDocumentsCollection',{form_collection}).then(res=>{
+            axios.post('/api/UploadDocumentsCollection',form_collection).then(res=>{
                 Actualizar_files()
             })
         }
