@@ -55,6 +55,7 @@
                                         Close
                                     </v-btn>
                                     <v-btn
+                                        :loading="loading"
                                         color="info"
                                         variant="elevated"
                                         @click="Upload_Documents"
@@ -122,11 +123,12 @@ export default{
     setup(){
         var files = ref([])
         const route = useRoute()
+        const loading = ref(false)
         const new_files = ref([])
         const drawer = ref(false)
         const documents_modal = ref(false)
         const Eliminar_documento = (id_doc)=>{
-            axios.post('/api/DocumentDelete',{id_doc}).then(res=>{
+            axios.post('/api/DeleteDocument',{id_doc}).then(res=>{
                 Actualizar_files()
             })
         }
@@ -137,6 +139,7 @@ export default{
             })
         }
         const Upload_Documents = () =>{
+            loading.value=true
             var form_collection = new FormData();
             form_collection.append('id_api', route.query.id_api);
             for(let i=0;i<new_files.value.length;i++){
@@ -145,10 +148,15 @@ export default{
             form_collection.getAll('files',"id_api");
             axios.post('/api/UploadDocumentsCollection',form_collection).then(res=>{
                 Actualizar_files()
+                loading.value=false
+            }).catch(error=>{
+                console.log(error)
+                loading.value=false
             })
         }
         return{
             drawer,
+            loading,
             documents_modal,
             files,
             new_files,

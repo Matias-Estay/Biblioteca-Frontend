@@ -56,6 +56,7 @@
 
       <v-btn
         @click="login"
+        :loading="loading"
         block
         class="mb-8"
         color="blue"
@@ -86,20 +87,25 @@ import axios from 'axios'
 export default{
   setup(){
     const session = sessionStore()
+    const loading = ref(false)
     const visible = ref(false)
     const email = ref('')
     const password = ref('')
     let login =  ()=>{
+      loading.value=true
       axios.post('/api/login',{email:email.value, password:password.value}).then((resultado)=>{
         session.SetUser(resultado.data)
         router.push('/home')
+      }).catch(()=>{
+        loading.value=false
       })
     }
     return{
-      login,
+      loading,
       email,
       password,
-      visible
+      visible,
+      login,
     }
     
   }

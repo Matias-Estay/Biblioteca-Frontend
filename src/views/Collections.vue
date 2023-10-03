@@ -50,6 +50,7 @@
                                         Close
                                     </v-btn>
                                     <v-btn
+                                        :loading="loading"
                                         color="info"
                                         variant="elevated"
                                         @click="Create_Collection"
@@ -115,6 +116,7 @@ export default{
     },
     setup(){
         const collection_modal = ref(false)
+        const loading = ref(false)
         const collection_name = ref("")
         const files = ref(null)
         const collections = ref([])
@@ -125,6 +127,7 @@ export default{
             },
         ]
         const Create_Collection = () => {
+            loading.value=true
             var form_collection = new FormData();
             form_collection.append('name', JSON.stringify(collection_name.value));
             for(let i=0;i<files.value.length;i++){
@@ -133,6 +136,10 @@ export default{
             form_collection.getAll('files',"name");
             axios.post('/api/careateCollection',form_collection).then((res)=>{
                 Load_Collections()
+                loading.value=false
+            }).catch(error=>{
+                console.log(error)
+                loading.value=false
             })
         }
         const Load_Collections = () =>{
@@ -142,6 +149,7 @@ export default{
             })
         }
         return{
+            loading,
             collection_modal,
             collection_name,
             collections,
